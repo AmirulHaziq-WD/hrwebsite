@@ -31,7 +31,7 @@ class Staffs extends Model
 
     public function position()
     {
-        return $this->belongsTo(Positions::class);
+        return $this->belongsTo(Positions::class, 'position_id');
     }
 
     public function attendance()

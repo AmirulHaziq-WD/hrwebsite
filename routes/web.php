@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DepartmentsController;
 use App\Http\Controllers\PositionsController;
 use App\Http\Controllers\StaffsController;
@@ -11,9 +12,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return Inertia::render('admin/dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/departments', [DepartmentsController::class, 'index'])->name('departments.index');
     Route::get('/departments/create', [DepartmentsController::class, 'create'])->name('departments.create');
     Route::post('departments', [DepartmentsController::class, 'store'])->name('departments.store');
