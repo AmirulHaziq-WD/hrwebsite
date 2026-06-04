@@ -54,7 +54,10 @@ class DepartmentsController extends Controller
      */
     public function show(Departments $departments)
     {
-        $departments->load('positions');
+        $departments->load([
+            'positions',
+            'positions.staffs.positon',
+        ]);
 
         return Inertia::render('admin/Departments/Show', [
             'departments' => $departments,

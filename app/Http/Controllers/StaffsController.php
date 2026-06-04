@@ -55,7 +55,19 @@ class StaffsController extends Controller
             'address.state' => 'required|string',
         ]);
 
-        Staffs::create($request->all());
+        Staffs::create([
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
+            'preferredName' => $request->preferredName,
+            'ic' => $request->ic,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'phoneNumber' => $request->phoneNumber,
+            'email' => $request->email,
+            'address' => $request->address,
+            'salary' => $request->salary,
+            'position_id' => $request->position_id,
+        ]);
 
         return redirect()->route('staffs.index')->with('message', 'Staff created successfully.');
     }
@@ -73,7 +85,13 @@ class StaffsController extends Controller
      */
     public function edit(Staffs $staffs)
     {
-        return Inertia::render('admin/Staffs/Edit', compact('staffs'));
+        $staffs->load('position.department');
+        $departments = Departments::with('positions')->get();
+
+        return Inertia::render('admin/Staffs/Edit', [
+            'staffs' => $staffs,
+            'departments' => $departments,
+        ]);
     }
 
     /**
@@ -112,6 +130,8 @@ class StaffsController extends Controller
             'address.postalCode' => 'required|string|max:5',
             'address.city' => 'required|string',
             'address.state' => 'required|string',
+            'salary' => 'required|numeric|min:0',
+            'position_id' => 'required|exists:positions,id',
         ]);
 
         $staffs->update([
@@ -124,6 +144,8 @@ class StaffsController extends Controller
             'phoneNumber' => $request->input('phoneNumber'),
             'email' => $request->input('email'),
             'address' => $request->input('address'),
+            'salary' => $request->salary,
+            'position_id' => $request->position_id,
         ]);
 
         return redirect()->route('staffs.index')->with('message', 'Staff updated successfully.');

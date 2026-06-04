@@ -26,13 +26,35 @@ interface Staff {
     email: string;
     phoneNumber: string;
     address: Address;
+    salary: string;
+    position_id: number | string;
+    position: {
+        id: number;
+        departments_id: number;
+        title: string;
+        basicSalary: string;
+    };
 }
+
+type Position = {
+    id: number;
+    title: string;
+    basicSalary: string;
+};
+
+type Department = {
+    id: number | string;
+    code: string;
+    name: string;
+    positions: Position[];
+};
 
 interface Props {
     staffs: Staff;
+    departments: Department[];
 }
 
-export default function Edit({ staffs }: Props) {
+export default function Edit({ staffs, departments }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         firstName: staffs.firstName,
         lastName: staffs.lastName,
@@ -49,27 +71,48 @@ export default function Edit({ staffs }: Props) {
             city: staffs.address.city,
             state: staffs.address.state,
         },
-        // salary: '',
-        // department: '',
-        // position: '',
+        salary: staffs.salary.toString(),
+
+        departments_id: staffs.position?.departments_id?.toString() ?? '',
+
+        position_id: staffs.position_id?.toString() ?? '',
     });
 
-    const generateEmail = (pname: string) => {
-        const generated = `${pname}@company.com`.toLowerCase().replace(/\s+/g, '');
+    const generateEmail = (pname: string, dcode: string) => {
+        const generated = `${pname}.${dcode}@company.com`.toLowerCase().replace(/\s+/g, '');
 
         setData('email', generated);
     };
 
     const handlePreferredName = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
+
         setData('preferredName', value);
-        generateEmail(value); //, data.department
+
+        const selectedDepartment = departments.find((department) => department.id.toString() === data.departments_id);
+
+        generateEmail(value, selectedDepartment?.code || '');
     };
 
-    // const handleDepartment = (value: string) => {
-    //     setData('department', value);
-    //     generateEmail(data.preferredName, value);
-    // };
+    const handleDepartment = (value: string) => {
+        setData('departments_id', value);
+
+        const selectedDepartment = departments.find((department) => department.id.toString() === value);
+
+        generateEmail(data.preferredName, selectedDepartment?.code || '');
+    };
+
+    const handlePosition = (value: string) => {
+        setData('position_id', value);
+
+        const selectedDepartment = departments.find((department) => department.id.toString() === data.departments_id);
+
+        const selectedPosition = selectedDepartment?.positions.find((position) => position.id.toString() === value);
+
+        if (selectedPosition) {
+            setData('salary', selectedPosition.basicSalary);
+        }
+    };
 
     const handleIC = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -269,7 +312,45 @@ export default function Edit({ staffs }: Props) {
                             ></Input>
                         </div>
                     </div>
-                    {/* <div className="flex items-center justify-start gap-2">
+                    <div className="flex items-center justify-start gap-2">
+                        <Label htmlFor="department" className="w-22">
+                            Department :
+                        </Label>
+                        <Select value={data.departments_id} onValueChange={handleDepartment}>
+                            <SelectTrigger id="department" className="w-fit">
+                                <SelectValue placeholder="Department" />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                {departments.map((department) => (
+                                    <SelectItem key={department.id} value={department.id.toString()}>
+                                        {department.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="flex items-center justify-start gap-2">
+                        <Label htmlFor="position" className="w-20">
+                            Position :
+                        </Label>
+                        <Select value={data.position_id} onValueChange={handlePosition}>
+                            <SelectTrigger id="position" className="w-fit">
+                                <SelectValue placeholder="Position" />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                {departments
+                                    .find((department) => department.id.toString() === data.departments_id)
+                                    ?.positions.map((position) => (
+                                        <SelectItem key={position.id} value={position.id.toString()}>
+                                            {position.title}
+                                        </SelectItem>
+                                    ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="flex items-center justify-start gap-2">
                         <Label htmlFor="salary" className="w-22">
                             Salary (RM):
                         </Label>
@@ -288,38 +369,9 @@ export default function Edit({ staffs }: Props) {
                             }}
                         />
                     </div>
-                    <div className="flex items-center justify-start gap-2">
-                        <Label htmlFor="department" className="w-22">
-                            Department :
-                        </Label>
-                        <Select value={data.department} onValueChange={handleDepartment}>
-                            <SelectTrigger id="department" className="w-fit">
-                                <SelectValue placeholder="Department" />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                <SelectItem value="ACC">Accounting</SelectItem>
-                                <SelectItem value="AUDIT">Audit</SelectItem>
-                                <SelectItem value="HR">Human Resource</SelectItem>
-                                <SelectItem value="TAX">Tax</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="flex items-center justify-start gap-2">
-                        <Label htmlFor="position" className="w-20">
-                            Position :
-                        </Label>
-                        <Input
-                            id="position"
-                            placeholder="Position"
-                            className=""
-                            value={data.position}
-                            onChange={(e) => setData('position', e.target.value)}
-                        ></Input>
-                    </div> */}
                     <div className="flex w-full justify-end">
                         <Button disabled={processing} type="submit" className="cursor-pointer">
-                            Update
+                            Create
                         </Button>
                     </div>
                 </form>
