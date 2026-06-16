@@ -15,9 +15,11 @@ class DepartmentsController extends Controller
     public function index()
     {
 
-        $departments = Departments::orderBy('name')->get();
+        $departments = Departments::withCount('staffs')->orderBy('name')->get();
 
-        return Inertia::render('admin/Departments/Index', compact('departments'));
+        return Inertia::render('admin/Departments/Index', [
+            'departments' => $departments,
+        ]);
     }
 
     /**
@@ -56,7 +58,7 @@ class DepartmentsController extends Controller
     {
         $departments->load([
             'positions',
-            'positions.staffs.positon',
+            'positions.staffs.position',
         ]);
 
         return Inertia::render('admin/Departments/Show', [

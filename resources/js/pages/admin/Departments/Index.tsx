@@ -1,3 +1,4 @@
+import DepartmentCard from '@/components/department-card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
@@ -19,6 +20,7 @@ interface Department {
     slug: string;
     name: string;
     description: string;
+    staffs_count: number;
 }
 
 interface PageProps extends Record<string, any> {
@@ -54,10 +56,10 @@ export default function Index() {
                 )}
             </div>
             {departments.length > 0 && (
-                <div className="m-4 flex justify-start gap-4">
+                <div className="m-4 flex items-stretch justify-center gap-4">
                     {departments.map((department) => (
                         <Link key={department.id} href={route('departments.show', department.slug)}>
-                            <Button className="cursor-pointer">{department.name}</Button>
+                            <DepartmentCard name={department.name} description={department.description} totalStaffs={department.staffs_count} />
                         </Link>
                     ))}
                 </div>
