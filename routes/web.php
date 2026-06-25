@@ -30,7 +30,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/staffs/dashboard', function () {
         return Inertia::render('staffs/dashboard');
     })->name('staffs.dashboard');
 });

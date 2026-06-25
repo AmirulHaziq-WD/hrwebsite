@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Departments;
 use App\Models\Staffs;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -55,7 +57,17 @@ class StaffsController extends Controller
             'address.state' => 'required|string',
         ]);
 
+        $password = strtolower($request->preferredName).'123';
+
+        $user = User::create([
+            'name' => $request->preferredName,
+            'email' => $request->email,
+            'password' => Hash::make($password),
+            'role' => 'employee',
+        ]);
+
         Staffs::create([
+            'user_id' => $user->id,
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'preferredName' => $request->preferredName,
@@ -156,6 +168,7 @@ class StaffsController extends Controller
      */
     public function destroy(Staffs $staffs)
     {
+        $staffs->user?->delete();
         $staffs->delete();
 
         return redirect()->route('staffs.index')->with('message', 'Staff deleted successfully.');

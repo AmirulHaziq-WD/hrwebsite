@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Staffs extends Model
 {
     protected $fillable = [
+        'user_id',
         'firstName',
         'lastName',
         'preferredName',
@@ -23,6 +24,11 @@ class Staffs extends Model
     protected $casts = [
         'address' => 'array',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function department()
     {

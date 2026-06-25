@@ -39,7 +39,7 @@ export default function Index() {
             <Head title="Departments" />
             <div className="m-4 flex gap-4">
                 <Link href={route('departments.create')}>
-                    <Button className="cursor-pointer">Create a Department</Button>
+                    <Button className="cursor-pointer">Create new Department</Button>
                 </Link>
             </div>
             <div className="m-4">
