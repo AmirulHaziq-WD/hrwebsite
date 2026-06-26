@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DepartmentsController;
+use App\Http\Controllers\EmployeeLeaveController;
 use App\Http\Controllers\PositionsController;
 use App\Http\Controllers\StaffsController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/staffs/dashboard', function () {
         return Inertia::render('staffs/dashboard');
     })->name('staffs.dashboard');
+    Route::get('/staffs/leave', [EmployeeLeaveController::class, 'index'])->name('leave.index');
+    Route::post('/staffs/leave', [EmployeeLeaveController::class, 'store'])->name('leave.store');
 });
 
 require __DIR__.'/settings.php';

@@ -40,6 +40,11 @@ class Staffs extends Model
         return $this->belongsTo(Positions::class, 'position_id');
     }
 
+    public function leaveRequests()
+    {
+        return $this->hasMany(LeaveRequest::class);
+    }
+
     public function attendance()
     {
         // return $this->hasMany(Attendance::class);

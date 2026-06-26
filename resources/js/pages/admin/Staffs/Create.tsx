@@ -104,7 +104,7 @@ export default function Create({ departments }: { departments: Department[] }) {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(route('staffs.store'));
     };
