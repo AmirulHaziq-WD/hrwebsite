@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CalendarCheck, LayoutGrid, NotepadText, Users } from 'lucide-react';
+import { CalendarCheck, LayoutGrid, ListTodo, NotepadText, Users } from 'lucide-react';
 import { FaPeopleLine } from 'react-icons/fa6';
 import AppLogo from './app-logo';
 
@@ -24,13 +24,18 @@ export function AppSidebar() {
               },
               {
                   title: 'Departments',
-                  url: '/departments',
+                  url: '/admin/departments',
                   icon: FaPeopleLine,
               },
               {
-                  title: 'Staffs',
-                  url: '/staffs',
+                  title: 'Staffs List',
+                  url: '/admin/list-staffs',
                   icon: Users,
+              },
+              {
+                  title: 'Leave Requests',
+                  url: '/admin/leave-requests',
+                  icon: ListTodo,
               },
           ]
         : [
