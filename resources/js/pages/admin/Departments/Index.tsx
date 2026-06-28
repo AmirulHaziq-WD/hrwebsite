@@ -56,7 +56,7 @@ export default function Index() {
                 )}
             </div>
             {departments.length > 0 && (
-                <div className="m-4 flex items-stretch justify-center gap-4">
+                <div className="m-4 flex items-stretch justify-start gap-4">
                     {departments.map((department) => (
                         <Link key={department.id} href={route('departments.show', department.slug)}>
                             <DepartmentCard name={department.name} description={department.description} totalStaffs={department.staffs_count} />
