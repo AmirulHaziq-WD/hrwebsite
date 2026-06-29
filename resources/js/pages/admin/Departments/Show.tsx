@@ -5,6 +5,7 @@ import { Head, Link } from '@inertiajs/react';
 
 interface Staff {
     id: number;
+    staff_id: string;
     preferredName: string;
     email: string;
     salary: number;
@@ -80,6 +81,7 @@ export default function Show({ departments }: PageProps) {
                                 <thead className="bg-muted">
                                     <tr>
                                         <th className="p-3 text-left">No.</th>
+                                        <th className="p-3 text-left">Staff Id</th>
                                         <th className="p-3 text-left">Name</th>
                                         <th className="p-3 text-left">Email</th>
                                         <th className="p-3 text-left">Position</th>
@@ -91,6 +93,7 @@ export default function Show({ departments }: PageProps) {
                                     {staffs.map((staff, index) => (
                                         <tr key={staff.id} className="border-t">
                                             <td className="p-3">{index + 1}</td>
+                                            <td className="p-3">{staff.staff_id}</td>
                                             <td className="p-3">{staff.preferredName}</td>
 
                                             <td className="p-3">{staff.email}</td>
