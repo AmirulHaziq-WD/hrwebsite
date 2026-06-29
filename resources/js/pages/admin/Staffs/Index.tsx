@@ -22,7 +22,8 @@ interface Address {
 }
 
 interface Staff {
-    id: string;
+    id: number;
+    staff_id: string;
     firstName: string;
     lastName: string;
     preferredName: string;
@@ -74,63 +75,64 @@ export default function Index() {
                     </Alert>
                 )}
             </div>
-            {staffs.length > 0 && (
-                <div className="m-4 min-w-0">
-                    <div className="overflow-x-auto">
-                        <Table className="w-full min-w-[1200px]">
-                            <TableCaption>A list of your recent staffs.</TableCaption>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="min-w-[90px]">Staff ID</TableHead>
-                                    <TableHead className="min-w-[150px]">First Name</TableHead>
-                                    <TableHead className="min-w-[150px]">Last Name</TableHead>
-                                    <TableHead>IC</TableHead>
-                                    <TableHead>Age</TableHead>
-                                    <TableHead>Gender</TableHead>
-                                    <TableHead>Email</TableHead>
-                                    <TableHead>Phone Number</TableHead>
-                                    <TableHead>Address</TableHead>
-                                    <TableHead className="text-center">Action</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {staffs.map((staff) => (
-                                    <TableRow key={staff.id}>
-                                        <TableCell className="font-medium">{staff.id}</TableCell>
-                                        <TableCell>{staff.firstName}</TableCell>
-                                        <TableCell>{staff.lastName}</TableCell>
-                                        <TableCell>{staff.ic}</TableCell>
-                                        <TableCell className="text-center">{staff.age}</TableCell>
-                                        <TableCell>{staff.gender}</TableCell>
-                                        <TableCell>{staff.email}</TableCell>
-                                        <TableCell>{staff.phoneNumber}</TableCell>
-                                        <TableCell className="min-w-[200px]">
-                                            {staff.address.address1}, {staff.address.address2}, {staff.address.postalCode}, {staff.address.city},{' '}
-                                            {staff.address.state}
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center justify-center gap-2 text-center">
-                                                <Link href={route('staffs.edit', staff.id)}>
-                                                    <Button size="sm" className="cursor-pointer">
-                                                        Edit
-                                                    </Button>
-                                                </Link>
-                                                <Button
-                                                    onClick={() => handleDelete(staff.id, staff.preferredName)}
-                                                    disabled={processing}
-                                                    className="cursor-pointer bg-red-500 hover:bg-red-700"
-                                                >
-                                                    <Trash2 />
+
+            <div className="m-4 min-w-0">
+                <div className="overflow-x-auto">
+                    <Table className="w-full min-w-300">
+                        <TableCaption>A list of your recent staffs.</TableCaption>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>No.</TableHead>
+                                <TableHead className="min-w-22">Staff ID</TableHead>
+                                <TableHead className="min-w-37.5">First Name</TableHead>
+                                <TableHead className="min-w-37.5">Last Name</TableHead>
+                                <TableHead>IC</TableHead>
+                                <TableHead>Age</TableHead>
+                                <TableHead>Gender</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Phone Number</TableHead>
+                                <TableHead>Address</TableHead>
+                                <TableHead className="text-center">Action</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {staffs.map((staff) => (
+                                <TableRow key={staff.id}>
+                                    <TableCell>{staff.id}</TableCell>
+                                    <TableCell className="text-center font-medium">{staff.staff_id}</TableCell>
+                                    <TableCell className="w-full">{staff.firstName}</TableCell>
+                                    <TableCell className="w-full">{staff.lastName}</TableCell>
+                                    <TableCell>{staff.ic}</TableCell>
+                                    <TableCell className="text-center">{staff.age}</TableCell>
+                                    <TableCell>{staff.gender}</TableCell>
+                                    <TableCell>{staff.email}</TableCell>
+                                    <TableCell>{staff.phoneNumber}</TableCell>
+                                    <TableCell className="min-w-50">
+                                        {staff.address.address1}, {staff.address.address2}, {staff.address.postalCode}, {staff.address.city},{' '}
+                                        {staff.address.state}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center justify-center gap-2 text-center">
+                                            <Link href={route('staffs.edit', staff.id)}>
+                                                <Button size="sm" className="cursor-pointer">
+                                                    Edit
                                                 </Button>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
+                                            </Link>
+                                            <Button
+                                                onClick={() => handleDelete(staff.staff_id, staff.preferredName)}
+                                                disabled={processing}
+                                                className="cursor-pointer bg-red-500 hover:bg-red-700"
+                                            >
+                                                <Trash2 />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </div>
-            )}
+            </div>
         </AppLayout>
     );
 }

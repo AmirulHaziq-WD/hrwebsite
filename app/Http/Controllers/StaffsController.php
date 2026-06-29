@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departments;
+use App\Models\Positions;
 use App\Models\Staffs;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -59,6 +60,23 @@ class StaffsController extends Controller
 
         $password = strtolower($request->preferredName).'123';
 
+        $staffPosition = Positions::with('department')
+            ->findOrFail($request->position_id);
+
+        $departmentCode = $staffPosition->department->code;
+
+        $lastStaff = Staffs::where('staff_id', 'LIKE', $departmentCode.'%')
+            ->orderByDesc('staff_id')
+            ->first();
+
+        if ($lastStaff) {
+            $number = (int) substr($lastStaff->staff_id, strlen($departmentCode));
+        } else {
+            $number = 0;
+        }
+
+        $staffId = $departmentCode.str_pad($number + 1, 3, '0', STR_PAD_LEFT);
+
         $user = User::create([
             'name' => $request->preferredName,
             'email' => $request->email,
@@ -68,6 +86,7 @@ class StaffsController extends Controller
 
         Staffs::create([
             'user_id' => $user->id,
+            'staff_id' => $staffId,
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'preferredName' => $request->preferredName,
