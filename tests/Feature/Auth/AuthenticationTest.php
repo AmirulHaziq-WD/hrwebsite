@@ -13,11 +13,11 @@ test('users can authenticate using the login screen', function () {
 
     $response = $this->post('/login', [
         'email' => $user->email,
-        'password' => 'password',
+        'password' => 'password', // assuming this is the factory password
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect('/dashboard');
+    $this->assertAuthenticatedAs($user);
 });
 
 test('users can not authenticate with invalid password', function () {
