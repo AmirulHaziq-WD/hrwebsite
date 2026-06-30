@@ -16,7 +16,7 @@ test('users can authenticate using the login screen', function () {
         'password' => 'password', // assuming this is the factory password
     ]);
 
-    $response->assertRedirect('/dashboard');
+    $response->assertRedirect(route('staffs.dashboard'));
     $this->assertAuthenticatedAs($user);
 });
 
